@@ -18,8 +18,7 @@ import openfl.display.BitmapData;
 class WebP
 {
 	/**
-		Creates a BitmapData instance from a WebP file.
-		@usage		var bitmap:Bitmap = new Bitmap(WebP.getBitmapData("/assets/images/coolimage.webp"));
+		Creates a BitmapData instance from a WebP file at the specified path.
 		@param	file		The asset path of the WebP
 		@return		A new BitmapData object
 	**/
@@ -39,24 +38,52 @@ class WebP
 	}
 
 	/**
-		Creates an Image instance from a WebP file.
-		@usage		var bitmap:Bitmap = new Bitmap(WebP.getImage("/assets/images/coolimage.webp"));
+		Creates an Image instance from a WebP file at the specified path.
 		@param	file		The asset path of the WebP
 		@return		A new Image object
 	**/
 	public static function getImage(file:String):Image
 	{
 		#if cpp
-		var webp:Bytes = File.getBytes(Sys.getCwd() + file);
-		var webpData:Pointer<UInt8> = Stdlib.malloc(webp.length);
+		return getImageFromBytes(File.getBytes(file));
+		#elseif (js && html5)
+		return LimeAssets.getImage(file);
+		#else
+		throw new Exception("WebP files are not supported on this platform!");
+		#end
+	}
+
+	/**
+		Creates a BitmapData instance from a WebP file converted from the given bytes.
+		@param	file		The asset path of the WebP
+		@return		A new Image object
+	**/
+	public static function getBitmapDataFromBytes(bytes:Bytes):BitmapData
+	{
+		#if cpp
+		return BitmapData.fromImage(getImageFromBytes(bytes));
+		#else
+		throw new Exception("Loading WebP files from bytes is not supported on this platform!");
+		#end
+	}
+
+	/**
+		Creates an Image instance from a WebP file converted from the given bytes.
+		@param	file		The asset path of the WebP
+		@return		A new Image object
+	**/
+	public static function getImageFromBytes(bytes:Bytes):Image
+	{
+		#if cpp
+		var webpData:Pointer<UInt8> = Stdlib.malloc(bytes.length);
 		if (webpData == null)
 		{
-			trace('Failed to allocate memory for file at path $file');
+			trace('Failed to allocate memory for the specified file.');
 			return null;
 		}
 
-		for (i in 0...webp.length)
-			webpData[i] = webp.getData()[i];
+		for (i in 0...bytes.length)
+			webpData[i] = bytes.getData()[i];
 
 		// Initialize config
 		var config:Pointer<WebPDecoderConfig> = Stdlib.malloc(Stdlib.sizeof(WebPDecoderConfig));
@@ -66,10 +93,10 @@ class WebP
 		config.value.output.colorspace = #if windows untyped __cpp__("MODE_BGRA") #else untyped __cpp__("MODE_RGBA") #end;
 
 		// The C Library
-		var status:VP8StatusCode = Decode.WebPDecode(webpData.raw, webp.length, config.raw);
+		var status:VP8StatusCode = Decode.WebPDecode(webpData.raw, bytes.length, config.raw);
 		if (status != VP8_STATUS_OK)
 		{
-			trace('Failed to decode file at path $file with code $status');
+			trace('Failed to decode file with code $status');
 			return null;
 		}
 
@@ -83,10 +110,8 @@ class WebP
 
 		return new Image(new ImageBuffer(decodedData, output.width, output.height, Std.int(rgbaBuffer.stride / output.width) * 8,
 			#if windows BGRA32 #else RGBA32 #end));
-		#elseif (js && html5)
-		return LimeAssets.getImage(file);
 		#else
-		throw new Exception("WebP files are not supported on this platform!");
+		throw new Exception("Loading WebP files from bytes is not supported on this platform!");
 		#end
 	}
 }
