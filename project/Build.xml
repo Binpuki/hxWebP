@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xml>
+	<pragma once="true" />
+
+	<!--Please don't kill me I have zero experience in this ;-;-->
+	<files id="haxe">
+		<compilerflag value="-I${haxelib:hxWebP}/project/webp/include" />
+	</files>
+
+	<files id="__main__">
+		<compilerflag value="-I${haxelib:hxWebP}/project/webp/include" />
+	</files>
+
+	<target id="haxe">
+		<section if="windows">
+			<section if="HXCPP_M64">
+				<lib name="${haxelib:hxWebP}/project/webp/lib/Windows64/libwebp.lib" />
+				<lib name="${haxelib:hxWebP}/project/webp/lib/Windows64/libwebpdemux.lib" />
+				<lib name="${haxelib:hxWebP}/project/webp/lib/Windows64/libwebpmux.lib" />
+			</section>
+		</section>
+	</target>
+</xml>

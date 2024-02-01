@@ -1,0 +1,4 @@
+<project>
+    <haxelib name="lime" />
+	<haxelib name="openfl" />
+</project>
