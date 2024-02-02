@@ -32,15 +32,125 @@ extern class Decode
 	@:native("WebPDecodeBGR")
 	static function WebPDecodeBGR(data:RawConstPointer<UInt8>, data_size:SizeT, width:RawPointer<Int>, height:RawPointer<Int>):RawPointer<UInt8>;
 
+	@:native("WebPDecodeYUV")
+	static function WebPDecodeYUV(data:RawConstPointer<UInt8>, data_size:SizeT, width:RawPointer<Int>, height:RawPointer<Int>,
+		u:RawPointer<RawPointer<UInt8>>, v:RawPointer<RawPointer<UInt8>>, stride:RawPointer<Int>, uv_stride:RawPointer<Int>):RawPointer<UInt8>;
+
+	@:native("WebPDecodeRGBAInto")
+	static function WebPDecodeRGBAInto(data:RawConstPointer<UInt8>, data_size:SizeT, output_buffer:RawPointer<UInt8>, output_buffer_size:SizeT,
+		output_stride:Int):RawPointer<UInt8>;
+
+	@:native("WebPDecodeARGBInto")
+	static function WebPDecodeARGBInto(data:RawConstPointer<UInt8>, data_size:SizeT, output_buffer:RawPointer<UInt8>, output_buffer_size:SizeT,
+		output_stride:Int):RawPointer<UInt8>;
+
+	@:native("WebPDecodeBGRAInto")
+	static function WebPDecodeBGRAInto(data:RawConstPointer<UInt8>, data_size:SizeT, output_buffer:RawPointer<UInt8>, output_buffer_size:SizeT,
+		output_stride:Int):RawPointer<UInt8>;
+
+	@:native("WebPDecodeRGBInto")
+	static function WebPDecodeRGBInto(data:RawConstPointer<UInt8>, data_size:SizeT, output_buffer:RawPointer<UInt8>, output_buffer_size:SizeT,
+		output_stride:Int):RawPointer<UInt8>;
+
+	@:native("WebPDecodeBGRInto")
+	static function WebPDecodeBGRInto(data:RawConstPointer<UInt8>, data_size:SizeT, output_buffer:RawPointer<UInt8>, output_buffer_size:SizeT,
+		output_stride:Int):RawPointer<UInt8>;
+
+	@:native("WebPDecodeYUVInto")
+	static function WebPDecodeYUVInto(data:RawConstPointer<UInt8>, data_size:SizeT, luma:RawPointer<UInt8>, luma_size:SizeT, luma_stride:Int,
+		u:RawPointer<UInt8>, u_size:SizeT, u_stride:Int, v:RawPointer<UInt8>, v_size:SizeT, v_stride:Int):RawPointer<UInt8>;
+
+	@:native("WebPIsPremultipliedMode")
+	static function WebPIsPremultipliedMode(mode:NativeWEBP_CSP_MODE):Int;
+
+	@:native("WebPIsAlphaMode")
+	static function WebPIsAlphaMode(mode:NativeWEBP_CSP_MODE):Int;
+
+	@:native("WebPIsRGBMode")
+	static function WebPIsRGBMode(mode:NativeWEBP_CSP_MODE):Int;
+
+	@:native("WebPInitDecBuffer")
+	static function WebPInitDecBuffer(buffer:RawPointer<WebPDecBuffer>):Int;
+
+	@:native("WebPFreeDecBuffer")
+	static function WebPFreeDecBuffer(buffer:RawPointer<WebPDecBuffer>):Void;
+
+	@:native("WebPINewDecoder")
+	static function WebPINewDecoder(output_buffer:RawPointer<WebPDecBuffer>):RawPointer<WebPIDecoder>;
+
+	@:native("WebPINewRGB")
+	static function WebPINewRGB(csp:NativeWEBP_CSP_MODE, output_buffer:RawPointer<UInt8>, output_buffer_size:SizeT, output_stride:Int):RawPointer<WebPIDecoder>;
+
+	@:native("WebPINewYUVA")
+	static function WebPINewYUVA(luma:RawPointer<UInt8>, luma_size:SizeT, luma_stride:Int, u:RawPointer<UInt8>, u_size:SizeT, u_stride:Int,
+		v:RawPointer<UInt8>, v_size:SizeT, v_stride:Int, a:RawPointer<UInt8>, a_size:SizeT, a_stride:Int):RawPointer<WebPIDecoder>;
+
+	@:native("WebPINewYUV")
+	static function WebPINewYUV(luma:RawPointer<UInt8>, luma_size:SizeT, luma_stride:Int, u:RawPointer<UInt8>, u_size:SizeT, u_stride:Int,
+		v:RawPointer<UInt8>, v_size:SizeT, v_stride:Int):RawPointer<WebPIDecoder>;
+
+	@:native("WebPIDelete")
+	static function WebPIDelete(idec:RawPointer<WebPIDecoder>):Void;
+
+	@:native("WebPIAppend")
+	static function WebPIAppend(idec:RawPointer<WebPIDecoder>, data:RawConstPointer<UInt8>, data_size:SizeT):VP8StatusCode;
+
+	@:native("WebPIUpdate")
+	static function WebPIUpdate(idec:RawPointer<WebPIDecoder>, data:RawConstPointer<UInt8>, data_size:SizeT):VP8StatusCode;
+
+	@:native("WebPIDecGetRGB")
+	static function WebPIDecGetRGB(idec:RawConstPointer<WebPIDecoder>, last_y:RawPointer<Int>, width:RawPointer<Int>, height:RawPointer<Int>,
+		stride:RawPointer<Int>):RawPointer<UInt8>;
+
+	@:native("WebPIDecGetYUVA")
+	static function WebPIDecGetYUVA(idec:RawConstPointer<WebPIDecoder>, last_y:RawPointer<Int>, u:RawPointer<RawPointer<UInt8>>,
+		v:RawPointer<RawPointer<UInt8>>, a:RawPointer<RawPointer<UInt8>>, width:RawPointer<Int>, height:RawPointer<Int>, stride:RawPointer<Int>,
+		uv_stride:RawPointer<Int>):RawPointer<UInt8>;
+
+	@:native("WebPIDecGetYUV")
+	static function WebPIDecGetYUV(idec:RawConstPointer<WebPIDecoder>, last_y:RawPointer<Int>, u:RawPointer<RawPointer<UInt8>>,
+		v:RawPointer<RawPointer<UInt8>>, width:RawPointer<Int>, height:RawPointer<Int>, stride:RawPointer<Int>, uv_stride:RawPointer<Int>):RawPointer<UInt8>;
+
+	@:native("WebPIDecodedArea")
+	static function WebPIDecodedArea(idec:RawConstPointer<WebPIDecoder>, left:RawPointer<Int>, top:RawPointer<Int>, width:RawPointer<Int>,
+		height:RawPointer<Int>):RawPointer<WebPDecBuffer>;
+
+	@:native("WebPGetFeatures")
+	static function WebPGetFeatures(data:RawConstPointer<UInt8>, data_size:SizeT, features:RawPointer<WebPBitstreamFeatures>):VP8StatusCode;
+
 	@:native("WebPInitDecoderConfig")
 	static function WebPInitDecoderConfig(config:RawPointer<WebPDecoderConfig>):Int;
+
+	@:native("WebPIDecode")
+	static function WebPIDecode(data:RawConstPointer<UInt8>, data_size:SizeT, config:RawPointer<WebPDecoderConfig>):RawPointer<WebPIDecoder>;
 
 	@:native("WebPDecode")
 	static function WebPDecode(data:RawConstPointer<UInt8>, data_size:SizeT, config:RawPointer<WebPDecoderConfig>):VP8StatusCode;
 }
 
+// TODO: Maybe port over the rest so WebPIDecoder can actually be used in Haxe (if neccesary)
+
+@:structAccess
+@:native("WebPIDecoder")
+extern class WebPIDecoder {}
+
+@:native("VP8StatusCode")
+@:include("webp/decode.h")
+@:unreflective
+extern class NativeVP8StatusCode {}
+
 enum abstract VP8StatusCode(Int) from Int to Int
 {
+	@:to(NativeVP8StatusCode)
+	@:unreflective
+	inline public function toNative()
+		return untyped __cpp__("((VP8StatusCode)({0}))", this);
+
+	@:from(NativeVP8StatusCode)
+	@:unreflective
+	inline static public function fromNative(value:NativeVP8StatusCode)
+		return cast(untyped value, VP8StatusCode);
+
 	final VP8_STATUS_OK = 0;
 	final VP8_STATUS_OUT_OF_MEMORY = 1;
 	final VP8_STATUS_INVALID_PARAM = 2;
@@ -92,8 +202,22 @@ extern class WebPBitstreamFeatures
 }
 
 @:native("WEBP_CSP_MODE")
+@:include("webp/decode.h")
+@:unreflective
+extern class NativeWEBP_CSP_MODE {}
+
 enum abstract WEBP_CSP_MODE(Int) from Int to Int
 {
+	@:to(NativeWEBP_CSP_MODE)
+	@:unreflective
+	inline public function toNative()
+		return untyped __cpp__("((WEBP_CSP_MODE)({0}))", this);
+
+	@:from(NativeWEBP_CSP_MODE)
+	@:unreflective
+	inline static public function fromNative(value:NativeWEBP_CSP_MODE)
+		return cast(untyped value, WEBP_CSP_MODE);
+
 	final MODE_RGB = 0;
 	final MODE_RGBA = 1;
 	final MODE_BGR = 2;
@@ -123,7 +247,7 @@ extern class WebPBuffers
 @:native("WebPDecBuffer")
 extern class WebPDecBuffer
 {
-	@:native("colorspace") var colorspace:WEBP_CSP_MODE;
+	@:native("colorspace") var colorspace:NativeWEBP_CSP_MODE;
 	@:native("width") var width:Int;
 	@:native("height") var height:Int;
 	@:native("is_external_memory") var is_external_memory:Int;
