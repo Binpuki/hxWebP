@@ -2,6 +2,17 @@
 
 A Haxe/[OpenFL](https://www.openfl.org) library for using WebP files with  [libwebp 1.3.2](https://chromium.googlesource.com/webm/libwebp).
 
+## Why WebP?
+As opposed to JPEG, PNG, or GIF files, WebP files are:
+- Smaller in size compared to all three
+- Can be transparent like PNG files
+- Supports both lossy (JPG-like) and lossless (PNG-like) compression
+- Can be animated too (like GIFs) while being transparent and lossless!
+
+Unfortunately, as of right now, WebP files are also:
+- Unsupported natively on not-HTML5 browsers (leads to converting back to PNG/JPG/GIF files in most circumstances)
+- Not easy to encode images into WebP with specific settings
+
 ## Supported Features
 Very barebones so far! Does the following:
 - Decodes WebP files into Image/BitmapData to use in Lime/OpenFL.
