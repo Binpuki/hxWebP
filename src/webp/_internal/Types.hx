@@ -4,7 +4,7 @@ package webp._internal;
 import cpp.RawPointer;
 import cpp.SizeT;
 
-@:buildXml('<include name="C:/Users/Binpuki/Documents/GitHub/GhostGame/project/Build.xml" />')
+@:buildXml('<include name="${haxelib:hxWebP}/project/Build.xml" />')
 @:include('webp/types.h')
 @:unreflective
 extern class Types
