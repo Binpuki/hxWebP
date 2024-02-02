@@ -90,7 +90,7 @@ class WebP
 		Decode.WebPInitDecoderConfig(config.raw);
 
 		// Assume its RGBA for now
-		config.value.output.colorspace = #if windows untyped __cpp__("MODE_BGRA") #else untyped __cpp__("MODE_RGBA") #end;
+		config.value.output.colorspace = #if windows MODE_BGRA #else MODE_RGBA #end;
 
 		// The C Library
 		var status:VP8StatusCode = Decode.WebPDecode(webpData.raw, bytes.length, config.raw);
