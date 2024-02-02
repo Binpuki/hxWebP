@@ -5,9 +5,9 @@
     "tags": ["openfl","cpp","webp","imaging","formats"],
     "description": "A Lime/OpenFL extension for decoding WebP images.",
     "contributors": ["Binpuki"],
-    "releasenote": "0.0.3 - Fully ported over decode.h to haxe",
-    "version": "0.0.3",
-    "url": "https://github.com/soywiz/haxe-openfl-webp",
+    "releasenote": "0.1.0 - First barebones release",
+    "version": "0.1.0",
+    "url": "https://github.com/Binpuki/hxWebP",
     "dependencies": {
         "openfl": "",
         "hxcpp": ""
