@@ -6,7 +6,7 @@ import cpp.RawPointer;
 import cpp.SizeT;
 import cpp.UInt8;
 
-@:buildXml('<include name="C:/Users/Binpuki/Documents/GitHub/GhostGame/project/Build.xml" />')
+@:buildXml('<include name="${haxelib:hxWebP}/project/Build.xml" />')
 @:include("webp/decode.h")
 @:unreflective
 extern class Decode
