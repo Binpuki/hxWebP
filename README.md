@@ -10,7 +10,7 @@ As opposed to JPEG, PNG, or GIF files, WebP files are:
 - Can be animated too (like GIFs) while being transparent and lossless!
 
 Unfortunately, as of right now, WebP files are also:
-- Unsupported natively on not-HTML5 browsers (leads to converting back to PNG/JPG/GIF files in most circumstances)
+- Unsupported natively on not-HTML5 platforms (leads to converting back to PNG/JPG/GIF files in most circumstances)
 - Not easy to encode images into WebP with specific settings
 
 ## Supported Features
