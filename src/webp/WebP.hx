@@ -102,7 +102,7 @@ class WebP
 
 		var output:WebPDecBuffer = config.value.output;
 		var rgbaBuffer:WebPRGBABuffer = output.u.RGBA;
-		var decodedData:UInt8Array = new UInt8Array(rgbaBuffer.size);
+		var decodedData:UInt8Array = new UInt8Array(Std.int(rgbaBuffer.size));
 
 		// Convert pointer data into UInt8Array
 		for (i in 0...rgbaBuffer.size)
