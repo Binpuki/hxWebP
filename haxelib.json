@@ -5,8 +5,8 @@
     "tags": ["openfl","cpp","webp","imaging","formats"],
     "description": "A Lime/OpenFL extension for decoding WebP images.",
     "contributors": ["Binpuki"],
-    "releasenote": "0.2.0 - macOS support",
-    "version": "0.2.0",
+    "releasenote": "0.3.0 - Linux support",
+    "version": "0.3.0",
     "url": "https://github.com/Binpuki/hxWebP",
     "dependencies": {
         "openfl": "",
