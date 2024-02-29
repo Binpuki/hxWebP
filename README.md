@@ -23,7 +23,7 @@ WebP files are supported on the following platforms:
 | --- | --- |
 | Windows | ✔️ (64-bit) |
 | macOS | ✔️ |
-| Linux | 🚧 |
+| Linux | ✔️ |
 | HTML5 | ✔️ (natively) |
 | Android | 🚧 |
 | iOS | 🚧 |
@@ -42,11 +42,25 @@ Install hxWebP from either source:
    haxelib git hxWebP https://github.com/Binpuki/hxWebP.git
    ```
 
+## READ THIS if you're a linux user
+
+You need to install libwebp from your distro's package manager (Instructions may vary).
+
+* Debian-based distros (like Ubuntu or... well, Debian)
+   ```bash
+   sudo apt-get install libwebp-dev webp
+   ```
+
+* Arch-based distros
+   ```bash
+   sudo pacman -S libwebp
+   ```
+
 ## Usage
 
 Add the library inside your Project.xml file.
 ```xml
-   <haxelib name="hxWebP" if="windows || web" />
+   <haxelib name="hxWebP" if="cpp || web" />
 ```
 
 You can then use the ```webp.WebP``` class to decode files either from a specified path or binary data.
