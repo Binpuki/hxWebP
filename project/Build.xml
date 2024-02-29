@@ -4,11 +4,15 @@
 
 	<!--Please don't kill me I have zero experience in this ;-;-->
 	<files id="haxe">
-		<compilerflag value="-I${haxelib:hxWebP}/project/webp/include" />
+		<section unless="linux">
+			<compilerflag value="-I${haxelib:hxWebP}/project/webp/include" />
+		</section>
 	</files>
 
 	<files id="__main__">
-		<compilerflag value="-I${haxelib:hxWebP}/project/webp/include" />
+		<section unless="linux">
+			<compilerflag value="-I${haxelib:hxWebP}/project/webp/include" />
+		</section>
 	</files>
 
 	<target id="haxe">
@@ -34,6 +38,10 @@
 				<lib name="${haxelib:hxWebP}/project/webp/lib/MacArm64/libwebpdemux.a" />
 				<lib name="${haxelib:hxWebP}/project/webp/lib/MacArm64/libwebpmux.a" />
 			</section>
+		</section>
+
+		<section if="linux">
+			<lib name="-lwebp" />
 		</section>
 	</target>
 </xml>
