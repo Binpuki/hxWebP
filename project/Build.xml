@@ -27,14 +27,12 @@
 
 		<section if="macos">
 			<section if="HXCPP_M32 || HXCPP_M64">
-				<lib name="${haxelib:hxWebP}/project/webp/lib/MacOS/libsharpyuv.a" />
 				<lib name="${haxelib:hxWebP}/project/webp/lib/MacOS/libwebp.a" />
 				<lib name="${haxelib:hxWebP}/project/webp/lib/MacOS/libwebpdemux.a" />
 				<lib name="${haxelib:hxWebP}/project/webp/lib/MacOS/libwebpmux.a" />
 			</section>
 
 			<section if="HXCPP_ARM64">
-				<lib name="${haxelib:hxWebP}/project/webp/lib/MacArm64/libsharpyuv.a" />
 				<lib name="${haxelib:hxWebP}/project/webp/lib/MacArm64/libwebp.a" />
 				<lib name="${haxelib:hxWebP}/project/webp/lib/MacArm64/libwebpdemux.a" />
 				<lib name="${haxelib:hxWebP}/project/webp/lib/MacArm64/libwebpmux.a" />
@@ -43,6 +41,32 @@
 
 		<section if="linux">
 			<lib name="-lwebp" />
+		</section>
+
+		<section if="android">
+			<section if="HXCPP_ARM64">
+				<lib name="${haxelib:hxWebP}/project/webp/lib/Android/libwebp-arm64.a" />
+				<lib name="${haxelib:hxWebP}/project/webp/lib/Android/libwebpdemux-arm64.a" />
+				<lib name="${haxelib:hxWebP}/project/webp/lib/Android/libwebpmux-arm64.a" />
+			</section>
+
+			<section if="HXCPP_ARMV7">
+				<lib name="${haxelib:hxWebP}/project/webp/lib/Android/libwebp-armv7a.a" />
+				<lib name="${haxelib:hxWebP}/project/webp/lib/Android/libwebpdemux-armv7a.a" />
+				<lib name="${haxelib:hxWebP}/project/webp/lib/Android/libwebpmux-armv7a.a" />
+			</section>
+
+			<section if="HXCPP_X86">
+				<lib name="${haxelib:hxWebP}/project/webp/lib/Android/libwebp-x86.a" />
+				<lib name="${haxelib:hxWebP}/project/webp/lib/Android/libwebpdemux-x86.a" />
+				<lib name="${haxelib:hxWebP}/project/webp/lib/Android/libwebpmux-x86.a" />
+			</section>
+
+			<section if="HXCPP_X86_64">
+				<lib name="${haxelib:hxWebP}/project/webp/lib/Android/libwebp-x86_64.a" />
+				<lib name="${haxelib:hxWebP}/project/webp/lib/Android/libwebpdemux-x86_64.a" />
+				<lib name="${haxelib:hxWebP}/project/webp/lib/Android/libwebpmux-x86_64.a" />
+			</section>
 		</section>
 
 		<section if="iphoneos">
