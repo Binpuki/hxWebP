@@ -25,8 +25,8 @@ WebP files are supported on the following platforms:
 | macOS | ✔️ |
 | Linux | ✔️ |
 | HTML5 | ✔️ (natively) |
-| Android | 🚧 |
-| iOS | 🚧 |
+| Android | ✔️ |
+| iOS | ✔️ |
 
 ## Installation
 
