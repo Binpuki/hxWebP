@@ -7,6 +7,8 @@ import cpp.UInt8;
 import sys.io.File;
 import webp._internal.Decode;
 #end
+
+import haxe.Exception;
 import haxe.io.Bytes;
 import lime.graphics.Image;
 import lime.graphics.ImageBuffer;
@@ -112,6 +114,31 @@ class WebP
 			#if windows BGRA32 #else RGBA32 #end));
 		#else
 		throw new Exception("Loading WebP files from bytes is not supported on this platform!");
+		#end
+	}
+
+	/**
+		Loads bitmap data. Works in cpp and html5, html5 load webp asynchronously via Lime (in supported browsers)
+		@param	file		The asset path of the WebP
+		@return		A new Image object
+	**/
+	public static function loadBitmapDataFromBytes(bytes:Bytes, onComplete:BitmapData->Void):Void {
+		#if cpp
+			var bitmapFromBytes = getBitmapDataFromBytes(bytes);
+			onComplete(bitmapFromBytes);
+			return;
+		#end
+		#if (js && html5)
+			var data_b64 = haxe.crypto.Base64.encode(bytes);
+			var limg_future = lime.graphics.Image.loadFromBase64(data_b64,"image/webp");
+			limg_future.onComplete (function (image) { 
+				var bitmapData = BitmapData.fromImage(image, true);
+				onComplete(bitmapData);
+			});
+			limg_future.onError (function (error) { 
+				onComplete(null);
+			});
+			return;
 		#end
 	}
 }
