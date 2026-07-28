@@ -88,8 +88,7 @@ class WebP
 			return null;
 		}
 
-		for (i in 0...bytes.length)
-			webpData[i] = bytes.getData()[i];
+		Stdlib.memcpy(webpData, Pointer.ofArray(bytes.getData()), bytes.length);
 
 		// Initialize config
 		var config:Pointer<WebPDecoderConfig> = Stdlib.malloc(Stdlib.sizeof(WebPDecoderConfig));
@@ -121,11 +120,13 @@ class WebP
 
 		var output:WebPDecBuffer = config.value.output;
 		var rgbaBuffer:WebPRGBABuffer = output.u.RGBA;
-		var decodedData:UInt8Array = new UInt8Array(Std.int(rgbaBuffer.size));
+		var decodedSize:Int = Std.int(rgbaBuffer.size);
 
-		// Convert pointer data into UInt8Array
-		for (i in 0...rgbaBuffer.size)
-			decodedData[i] = rgbaBuffer.rgba[i];
+		// Copy the decoded pixels out of libwebp's buffer. UInt8Array.fromBytes
+		// wraps the Bytes without copying again.
+		var decodedBytes:Bytes = Bytes.alloc(decodedSize);
+		Stdlib.memcpy(Pointer.ofArray(decodedBytes.getData()), Pointer.fromRaw(rgbaBuffer.rgba), decodedSize);
+		var decodedData:UInt8Array = UInt8Array.fromBytes(decodedBytes);
 
 		var image = new Image(new ImageBuffer(decodedData, output.width, output.height, Std.int(rgbaBuffer.stride / output.width) * 8,
 			#if windows BGRA32 #else RGBA32 #end));
