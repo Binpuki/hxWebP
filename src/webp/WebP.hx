@@ -63,7 +63,11 @@ class WebP
 	public static function getBitmapDataFromBytes(bytes:Bytes):BitmapData
 	{
 		#if cpp
-		return BitmapData.fromImage(getImageFromBytes(bytes));
+		var image:Image = getImageFromBytes(bytes);
+		if (image == null)
+			return null;
+
+		return BitmapData.fromImage(image);
 		#else
 		throw new Exception("Loading WebP files from bytes is not supported on this platform!");
 		#end
@@ -84,11 +88,16 @@ class WebP
 			return null;
 		}
 
-		for (i in 0...bytes.length)
-			webpData[i] = bytes.getData()[i];
+		Stdlib.memcpy(webpData, Pointer.ofArray(bytes.getData()), bytes.length);
 
 		// Initialize config
 		var config:Pointer<WebPDecoderConfig> = Stdlib.malloc(Stdlib.sizeof(WebPDecoderConfig));
+		if (config == null)
+		{
+			trace('Failed to allocate memory for the decoder config.');
+			Stdlib.free(webpData);
+			return null;
+		}
 		Decode.WebPInitDecoderConfig(config.raw);
 
 		// Assume its RGBA for now
@@ -96,22 +105,38 @@ class WebP
 
 		// The C Library
 		var status:VP8StatusCode = Decode.WebPDecode(webpData.raw, bytes.length, config.raw);
+
+		// The compressed input is only read during the decode call above
+		Stdlib.free(webpData);
+
 		if (status != VP8_STATUS_OK)
 		{
 			trace('Failed to decode file with code $status');
+			// WebPDecode may have allocated part of the output buffer before failing
+			Decode.WebPFreeDecBuffer(Pointer.addressOf(config.value.output).raw);
+			Stdlib.free(config);
 			return null;
 		}
 
 		var output:WebPDecBuffer = config.value.output;
 		var rgbaBuffer:WebPRGBABuffer = output.u.RGBA;
-		var decodedData:UInt8Array = new UInt8Array(Std.int(rgbaBuffer.size));
+		var decodedSize:Int = Std.int(rgbaBuffer.size);
 
-		// Convert pointer data into UInt8Array
-		for (i in 0...rgbaBuffer.size)
-			decodedData[i] = rgbaBuffer.rgba[i];
+		// Copy the decoded pixels out of libwebp's buffer. UInt8Array.fromBytes
+		// wraps the Bytes without copying again.
+		var decodedBytes:Bytes = Bytes.alloc(decodedSize);
+		Stdlib.memcpy(Pointer.ofArray(decodedBytes.getData()), Pointer.fromRaw(rgbaBuffer.rgba), decodedSize);
+		var decodedData:UInt8Array = UInt8Array.fromBytes(decodedBytes);
 
-		return new Image(new ImageBuffer(decodedData, output.width, output.height, Std.int(rgbaBuffer.stride / output.width) * 8,
+		var image = new Image(new ImageBuffer(decodedData, output.width, output.height, Std.int(rgbaBuffer.stride / output.width) * 8,
 			#if windows BGRA32 #else RGBA32 #end));
+
+		// The pixels have been copied into decodedData, so release the buffer
+		// libwebp allocated for us along with our own config allocation.
+		Decode.WebPFreeDecBuffer(Pointer.addressOf(config.value.output).raw);
+		Stdlib.free(config);
+
+		return image;
 		#else
 		throw new Exception("Loading WebP files from bytes is not supported on this platform!");
 		#end
